@@ -1,4 +1,5 @@
 #include <stm32f4xx.h>
+#include <math.h>
 #include "PLL_Config.c"
 #include "ADC.c"            //holds functions relating to ADC
 #include "DAC.c"            //holds functions relating to DAC
@@ -23,6 +24,7 @@
 //double MIC_V; //global variable to store voltage of MIC
 
 //static int LCD_display=1;  //global variable to control which voltage is displayed on LCD (POT, MIC, LDR)
+ double y[6800];
 
 int main(void)
 {
@@ -41,11 +43,22 @@ int main(void)
 //	Init_Timer7_10sec(); //config timer 7 to interrupt every 10 seconds
 //	InitBlueButton_EXTI(); //config external interrupt to serve blue button
 //	Init_Timer5_buzzer_off_low(); //config timer 5 for turning the buzzer off
-	
+	int n =0;
+for(n=0; n<6800; n++)
+{
+	double x = sin(2*3.14*40400*0.000000024*n);
+  y[n] = x;
+	return y[n];
+};
+
 	Init_Timer2_dac_sin();
 	while(1)
 	{}
 }
+
+
+
+
 
 	
 
@@ -54,7 +67,7 @@ void TIM2_IRQHandler(void)			//TIMER 2 INTERRUPT SERVICE ROUTINE for outputing t
 TIM2->SR&=~TIM_SR_UIF;				//clear interrupt flag in status register 	
 static int count=0;           //create static variable 'count' to go through arrays
 	                      //output=3 when C has been typed or pressed, gives sine wave on DAC2
-  output_dac(carry[count]);   //output=3 when C has been typed or pressed, gives sine wave on DAC2 
+  output_dac(0.5f + y[count]);   //output=3 when C has been typed or pressed, gives sine wave on DAC2 
 
 	count=count+99;  //goes through arrays at incrementy of ten steps
   
