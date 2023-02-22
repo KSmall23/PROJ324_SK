@@ -18,44 +18,46 @@ uint32_t n = 0;
 
 DigitalIn Bluebutton (USER_BUTTON);
 AnalogOut CarrierWave (DAC1_AN_PIN);
+InterruptIn StopWave (BNC_AN_PIN);
+DigitalOut Red (TRAF_RED1_PIN);
 //AnalogOut CarrierWave2 (DAC2_AN_PIN);
 
 Semaphore sem(1);
 Thread t1(osPriorityAboveNormal1);
 EventQueue Test;
 
+Timer Time;
+float time_store;
+float x=0;	
+
 void Teest();
 void QueueDispatch ();
 void trh();
+void StopWave_ISR();
 // main() runs in its own thread in the OS
 int main()
 {
-//     	RCC->AHB1ENR|=RCC_AHB1ENR_GPIOAEN;			//DAC port clock enable
-// 	GPIOA->MODER|=(3u<<(2*4));			//DAC output pin set as anaglogue
-//     	GPIOA->MODER|=(3u<<(2*5));			//DAC output pin set as anaglogue
-	
-// 	RCC->APB1ENR|=RCC_APB1ENR_DACEN;				//DAC clock enable
-// 	DAC->CR|=DAC_CR_EN2;										//DAC 2 enabled
-
-// 	DAC->CR|=DAC_CR_EN1;										//DAC 2 enabled
-
-//     Ticker Tick;
+    StopWave.rise(StopWave_ISR);
+    Red = 0;										
+    CarrierWave =0.33;
+     
 //    // t1.set_priority(osPriorityRealtime);
-//    // t1.start(trh);
+    t1.start(trh);
 //    Tick.attach_us(Teest,12);
      while (true) { 
      while (Bluebutton ==0);  // std::chrono::duration(1us);
      ThisThread:: sleep_for(10ms);
      while (Bluebutton == 1);
      ThisThread:: sleep_for(10ms);
+     Time.start();
      for (int n = 0; n<100000; n++)
      {
-         CarrierWave = 0.33;
+         CarrierWave = 0;
      }
-     
+    // printf("stopWave = %f", x);
     //  for (int n = 0; n<1000000; n++)
     //  {
-          CarrierWave =0;
+          CarrierWave =0.33;
     //  } 
   
   
@@ -79,15 +81,37 @@ void Teest()
 
 void trh()
 {
+    
     while (1)
-    {
-   //     sem.acquire();
+    {     
+        ThisThread::flags_wait_any(1);
+        printf("Wave = %f",x);
+        Red = !Red;
+        time_store =  Time.read_us();
+        printf("time = %f",time_store);
+        Time.stop();
+        Time.reset();
+        ThisThread:: sleep_for(50ms);
+        ThisThread::flags_clear(1);
+      
+
+    } 
+}
+
+
+//     sem.acquire();
     //  ThisThread ::flags_wait_any(1);
   //      uint32_t cw = 2048;//+ (4095*0.5*sin(2*pi*Freq*T*n));
     //    DAC1->DHR12R1 = cw;
        //  CarrierWave = 0.5f + 0.5f*0.5*sin(2*pi*Freq*T*n);
       //   n = (n == 100) ? 0 : (n+1);
-
-
-    } 
+void StopWave_ISR()
+{
+    StopWave.rise(NULL);
+   //x = StopWave;
+  // if ( x>=1)
+   {
+       t1.flags_set(1);
+      //osSignalSet(t1.get_id(), 1); 
+   }
 }
