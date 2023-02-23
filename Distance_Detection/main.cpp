@@ -18,8 +18,10 @@ uint32_t n = 0;
 
 DigitalIn Bluebutton (USER_BUTTON);
 AnalogOut CarrierWave (DAC1_AN_PIN);
-InterruptIn StopWave (BNC_AN_PIN);
+InterruptIn StopWave (PG_10);
 DigitalOut Red (TRAF_RED1_PIN);
+DigitalOut Green (TRAF_GRN1_PIN);
+//DigitalIn DIP (PG_10);
 //AnalogOut CarrierWave2 (DAC2_AN_PIN);
 
 Semaphore sem(1);
@@ -40,24 +42,30 @@ int main()
     StopWave.rise(StopWave_ISR);
     Red = 0;										
     CarrierWave =0.33;
+    
      
 //    // t1.set_priority(osPriorityRealtime);
     t1.start(trh);
 //    Tick.attach_us(Teest,12);
      while (true) { 
+    ThisThread:: sleep_for(10ms);     
      while (Bluebutton ==0);  // std::chrono::duration(1us);
      ThisThread:: sleep_for(10ms);
      while (Bluebutton == 1);
-     ThisThread:: sleep_for(10ms);
+     
      Time.start();
      for (int n = 0; n<100000; n++)
      {
          CarrierWave = 0;
+        // if (DIP> 0) {
+       //   Green = !Green;
+       //  }
      }
     // printf("stopWave = %f", x);
     //  for (int n = 0; n<1000000; n++)
     //  {
           CarrierWave =0.33;
+          StopWave.rise(StopWave_ISR);
     //  } 
   
   
@@ -71,12 +79,6 @@ int main()
 
 void Teest()
 {
-          //  uint16_t cw = 0;//+ (4095*0.5*sin(2*pi*Freq*T*n));
-           //          n = (n == 100) ? 0 : (n+1);
-        // DAC->DHR12R2 = cw;
-        // DAC->DHR12R1 = cw;
-   // sem.release();
-// t1.flags_set(1);
 }
 
 void trh()
@@ -85,33 +87,25 @@ void trh()
     while (1)
     {     
         ThisThread::flags_wait_any(1);
-        printf("Wave = %f",x);
-        Red = !Red;
+        //printf("Wave = %f",x);
+        //Red = !Red;
         time_store =  Time.read_us();
-        printf("time = %f",time_store);
+        printf("time = %f\n",time_store);
         Time.stop();
         Time.reset();
-        ThisThread:: sleep_for(50ms);
-        ThisThread::flags_clear(1);
+        //ThisThread:: sleep_for(50ms);
+        
+        //ThisThread::flags_clear(1);
       
 
     } 
 }
 
 
-//     sem.acquire();
-    //  ThisThread ::flags_wait_any(1);
-  //      uint32_t cw = 2048;//+ (4095*0.5*sin(2*pi*Freq*T*n));
-    //    DAC1->DHR12R1 = cw;
-       //  CarrierWave = 0.5f + 0.5f*0.5*sin(2*pi*Freq*T*n);
-      //   n = (n == 100) ? 0 : (n+1);
+
 void StopWave_ISR()
 {
     StopWave.rise(NULL);
-   //x = StopWave;
-  // if ( x>=1)
-   {
-       t1.flags_set(1);
-      //osSignalSet(t1.get_id(), 1); 
-   }
+   // Green = !Green;
+    t1.flags_set(1);
 }
