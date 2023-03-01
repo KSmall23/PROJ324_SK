@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include "math.h"
 
 
 
@@ -52,9 +53,10 @@ int main()
      while (Bluebutton ==0);  // std::chrono::duration(1us);
      ThisThread:: sleep_for(10ms);
      while (Bluebutton == 1);
-     
+     while (1) {
+
      Time.start();
-     for (int n = 0; n<100000; n++)
+     for (int n = 0; n<10000; n++)
      {
          CarrierWave = 0;
         // if (DIP> 0) {
@@ -70,10 +72,10 @@ int main()
   
   
   
-   // ThisThread:: sleep_for(osWaitForever);
+     ThisThread:: sleep_for(50ms);
 //    CarrierWave = 0.5f + 0.5f*0.5*sin(2*pi*Freq*T*n);
 //          n = (n == 999999) ? 0 : (n+1);
- 
+     }
     }
 }
 
@@ -91,6 +93,13 @@ void trh()
         //Red = !Red;
         time_store =  Time.read_us();
         printf("time = %f\n",time_store);
+        //distance = speed * time;
+        //here, let speed equal approx 343m/s
+        //time in us so needs to be *10^6 (e6)
+        //because distance is there and back then /2
+        float time_sec = time_store*0.000001;
+        float distance = (343 * time_sec)/2;
+        printf("distance = %f\n",distance);
         Time.stop();
         Time.reset();
         //ThisThread:: sleep_for(50ms);
