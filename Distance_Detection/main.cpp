@@ -42,41 +42,34 @@ int main()
 {
     StopWave.rise(StopWave_ISR);
     Red = 0;										
-    CarrierWave =0.33;
+    CarrierWave =1;
     
-     
-//    // t1.set_priority(osPriorityRealtime);
     t1.start(trh);
-//    Tick.attach_us(Teest,12);
-     while (true) { 
-    ThisThread:: sleep_for(10ms);     
-     while (Bluebutton ==0);  // std::chrono::duration(1us);
+    while (true) { 
+     
+     ThisThread:: sleep_for(10ms);     
+     while (Bluebutton ==0);  
      ThisThread:: sleep_for(10ms);
      while (Bluebutton == 1);
      while (1) {
 
      Time.start();
-     for (int n = 0; n<10000; n++)
-     {
+     //for (int n = 0; n<10000; n++)
+     
          CarrierWave = 0;
-        // if (DIP> 0) {
-       //   Green = !Green;
-       //  }
-     }
-    // printf("stopWave = %f", x);
-    //  for (int n = 0; n<1000000; n++)
-    //  {
-          CarrierWave =0.33;
-          StopWave.rise(StopWave_ISR);
-    //  } 
+    
+     ThisThread:: sleep_for(10ms);
+     
+          CarrierWave =1;
+          
+ 
   
   
   
-     ThisThread:: sleep_for(50ms);
-//    CarrierWave = 0.5f + 0.5f*0.5*sin(2*pi*Freq*T*n);
-//          n = (n == 999999) ? 0 : (n+1);
-     }
+     ThisThread:: sleep_for(10ms);
+ 
     }
+}
 }
 
 void Teest()
@@ -89,8 +82,6 @@ void trh()
     while (1)
     {     
         ThisThread::flags_wait_any(1);
-        //printf("Wave = %f",x);
-        //Red = !Red;
         time_store =  Time.read_us();
         printf("time = %f\n",time_store);
         //distance = speed * time;
@@ -101,12 +92,8 @@ void trh()
         float distance = (343 * time_sec)/2;
         printf("distance = %f\n",distance);
         Time.stop();
+        StopWave.rise(StopWave_ISR);
         Time.reset();
-        //ThisThread:: sleep_for(50ms);
-        
-        //ThisThread::flags_clear(1);
-      
-
     } 
 }
 
@@ -115,6 +102,5 @@ void trh()
 void StopWave_ISR()
 {
     StopWave.rise(NULL);
-   // Green = !Green;
     t1.flags_set(1);
 }
