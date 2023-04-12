@@ -32,7 +32,9 @@ EventQueue Test;
 //Ticker tick;
 
 Timer Time;
-float time_store;
+float time_store = 0;
+float time_avg =0;
+float time_store_array[100];
 float x=0;	
 // int ARRAY[880] ={1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
 // 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
@@ -106,13 +108,39 @@ void trh()
     {     
         ThisThread::flags_wait_any(1);
         time_store =  Time.read_us();
-        time_store = time_store -120;
-        printf("time = %f\n",time_store);
+
+        // time_store_array[9] = time_store_array[8];
+        // time_store_array[8] = time_store_array[7];
+        // time_store_array[7] = time_store_array[6];
+        // time_store_array[6] = time_store_array[5];
+        // time_store_array[5] = time_store_array[4];
+        // time_store_array[4] = time_store_array[3];
+        // time_store_array[3] = time_store_array[2];
+        // time_store_array[2] = time_store_array[1];
+        // time_store_array[1] = time_store_array[0];
+        // time_store_array[0] = time_store;
+        for (int n=99; n>0; n--)
+        {
+          time_store_array[n] = time_store_array[n-1];
+        }
+        time_store_array[0] = time_store;
+        // time_avg = (time_store_array[0]+ time_store_array[1]+ time_store_array[2]+
+        //            time_store_array[3]+time_store_array[4]+time_store_array[5]+
+        //            time_store_array[6]+time_store_array[7]+time_store_array[8]+
+        //            time_store_array[9])/10;
+        for (int n=0; n<100;n++)
+        {
+            time_avg= time_avg+ time_store_array[n];
+        }
+        time_avg = time_avg/100;
+
+        time_store = time_store;// -120;
+        printf("time = %f\n",time_avg);
         //distance = speed * time;
         //here, let speed equal approx 343m/s
         //time in us so needs to be *10^6 (e6)
         //because distance is there and back then /2
-        float time_sec = time_store*0.000001;
+        float time_sec = time_avg*0.000001;
         float distance = (343 * time_sec)/2;
         printf("distance = %f\n",distance);
         Time.stop();
