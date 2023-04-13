@@ -71,7 +71,7 @@ int main()
        while (1)
         {
          Time.start();
-         for (int n = 0; n<10000; n++)     
+         //for (int n = 0; n<10000; n++)     
           CarrierWave = 0;   
           ThisThread:: sleep_for(10ms);     
           CarrierWave =1; 
