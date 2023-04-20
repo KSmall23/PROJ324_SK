@@ -22,63 +22,111 @@ AnalogOut CarrierWave (DAC1_AN_PIN);
 InterruptIn StopWave (PG_10);
 DigitalOut Red (TRAF_RED1_PIN);
 DigitalOut Green (TRAF_GRN1_PIN);
-//DigitalIn DIP (PG_10);
-//AnalogOut CarrierWave2 (DAC2_AN_PIN);
 
-Semaphore sem(1);
+
 Thread t1(osPriorityAboveNormal1);
-//Thread t2(osPriorityNormal);
+
 EventQueue Test;
-//Ticker tick;
+
 
 Timer Time;
 float time_store = 0;
 float time_avg =0;
 float time_store_array[100];
 float x=0;	
-// int ARRAY[880] ={1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void Teest();
 void t2main ();
-void trh();
+void measure();
 void StopWave_ISR();
+
 // main() runs in its own thread in the OS
 int main()
 {
-    StopWave.rise(StopWave_ISR);
-    Red = 0;										
+    //sets up interrupt on received signal
+    StopWave.rise(StopWave_ISR);	
+    //carrier wave begins high (strangles carrrier wave)									
     CarrierWave =1;
-    
-    
-    t1.start(trh);
-   // t2.start(t2main);
-    while (true) {  
-      ThisThread:: sleep_for(10ms);     
-       while (Bluebutton ==0);  
+    //start high priority measurement thread
+    t1.start(measure);
+
+    while (true)
+     {  
+       //wait for blue button to be pressed before anything happens     
+       while (Bluebutton ==0); 
+       //wait fro debounce 
        ThisThread:: sleep_for(10ms);
        while (Bluebutton == 1);
-       //  tick.attach_us(Teest, 20);
-       
+
+       //in a while loop so that pulses are sent conitnuously
        while (1)
         {
-         Time.start();
-         //for (int n = 0; n<10000; n++)     
-          CarrierWave = 0;   
-          ThisThread:: sleep_for(10ms);     
-          CarrierWave =1; 
-          ThisThread:: sleep_for(10ms);
+         //start timer for distance measurement   
+         Time.start(); 
+         //pulse goes low to allow carrier wave through    
+         CarrierWave = 0;   
+         //keeps pulse low for 10ms
+         ThisThread:: sleep_for(10ms); 
+         //pulse returns to high so carrier wave stops gettting through    
+         CarrierWave =1; 
+         // keeps pulse high for 10ms
+         ThisThread:: sleep_for(10ms);
         }
      }
 }
+
+void meausre()
+{
+    
+    while (1)
+    {   
+        //wait for recitfied received signal or'stopwave'    
+        ThisThread::flags_wait_any(1);
+        //read the timer
+        time_store =  Time.read_us();
+        for (int n=99; n>0; n--)
+         {
+          time_store_array[n] = time_store_array[n-1];
+         }
+        time_store_array[0] = time_store;
+
+        for (int n=0; n<100;n++)
+         {
+          time_avg= time_avg+ time_store_array[n];
+         }
+        time_avg = time_avg/100;
+        time_store = time_store;
+
+        //print time signal took from transmitter to receiver
+        printf("time = %f\n",time_avg);
+        //convert time from us to s
+        float time_sec = time_avg*0.000001;
+        //CALCULTATE DISTANCE
+        //distance = speed * time;
+        //here, let speed equal approx 343m/s
+        //because distance is there and back then /2   
+        float distance = (343 * time_sec)/2;
+        //pritn distance from object
+        printf("distance = %f\n",distance);
+        //stop timer
+        Time.stop();
+        //reactivate interrupt
+        StopWave.rise(StopWave_ISR);
+        //reset timer to zero
+        Time.reset();
+    } 
+}
+
+
+void StopWave_ISR()
+{
+    StopWave.rise(NULL);
+    t1.flags_set(1);
+}
+
+
+
+
 
 // void t2main ()
 // {
@@ -101,58 +149,13 @@ int main()
 //  t2.flags_set(2); 
 // }
 
-void trh()
-{
-    
-    while (1)
-    {     
-        ThisThread::flags_wait_any(1);
-        time_store =  Time.read_us();
-
-        // time_store_array[9] = time_store_array[8];
-        // time_store_array[8] = time_store_array[7];
-        // time_store_array[7] = time_store_array[6];
-        // time_store_array[6] = time_store_array[5];
-        // time_store_array[5] = time_store_array[4];
-        // time_store_array[4] = time_store_array[3];
-        // time_store_array[3] = time_store_array[2];
-        // time_store_array[2] = time_store_array[1];
-        // time_store_array[1] = time_store_array[0];
-        // time_store_array[0] = time_store;
-        for (int n=99; n>0; n--)
-        {
-          time_store_array[n] = time_store_array[n-1];
-        }
-        time_store_array[0] = time_store;
-        // time_avg = (time_store_array[0]+ time_store_array[1]+ time_store_array[2]+
-        //            time_store_array[3]+time_store_array[4]+time_store_array[5]+
-        //            time_store_array[6]+time_store_array[7]+time_store_array[8]+
-        //            time_store_array[9])/10;
-        for (int n=0; n<100;n++)
-        {
-            time_avg= time_avg+ time_store_array[n];
-        }
-        time_avg = time_avg/100;
-
-        time_store = time_store;// -120;
-        printf("time = %f\n",time_avg);
-        //distance = speed * time;
-        //here, let speed equal approx 343m/s
-        //time in us so needs to be *10^6 (e6)
-        //because distance is there and back then /2
-        float time_sec = time_avg*0.000001;
-        float distance = (343 * time_sec)/2;
-        printf("distance = %f\n",distance);
-        Time.stop();
-        StopWave.rise(StopWave_ISR);
-        Time.reset();
-    } 
-}
-
-
-
-void StopWave_ISR()
-{
-    StopWave.rise(NULL);
-    t1.flags_set(1);
-}
+// int ARRAY[880] ={1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+// 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+// 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
