@@ -66,16 +66,16 @@ int main()
          //pulse goes low to allow carrier wave through    
          CarrierWave = 0;   
          //keeps pulse low for 10ms
-         ThisThread:: sleep_for(10ms); 
+         ThisThread:: sleep_for(20ms); 
          //pulse returns to high so carrier wave stops gettting through    
          CarrierWave =1; 
          // keeps pulse high for 10ms
-         ThisThread:: sleep_for(10ms);
+         ThisThread:: sleep_for(20ms);
         }
      }
 }
 
-void meausre()
+void measure()
 {
     
     while (1)
