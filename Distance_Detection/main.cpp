@@ -61,16 +61,18 @@ int main()
        //in a while loop so that pulses are sent conitnuously
        while (1)
         {
+         //reactivate interrupt
+         StopWave.rise(StopWave_ISR);
          //start timer for distance measurement   
          Time.start(); 
          //pulse goes low to allow carrier wave through    
          CarrierWave = 0;   
          //keeps pulse low for 10ms
-         ThisThread:: sleep_for(20ms); 
+         ThisThread:: sleep_for(10ms); 
          //pulse returns to high so carrier wave stops gettting through    
          CarrierWave =1; 
          // keeps pulse high for 10ms
-         ThisThread:: sleep_for(20ms);
+         ThisThread:: sleep_for(10ms);
         }
      }
 }
@@ -110,8 +112,7 @@ void measure()
         printf("distance = %f\n",distance);
         //stop timer
         Time.stop();
-        //reactivate interrupt
-        StopWave.rise(StopWave_ISR);
+       
         //reset timer to zero
         Time.reset();
     } 
