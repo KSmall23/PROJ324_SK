@@ -86,12 +86,13 @@ void measure()
         ThisThread::flags_wait_any(1);
         //read the timer
         time_store =  Time.read_us();
+        //collect 100 samples
         for (int n=99; n>0; n--)
          {
           time_store_array[n] = time_store_array[n-1];
          }
         time_store_array[0] = time_store;
-
+        //take the mean of the samples
         for (int n=0; n<100;n++)
          {
           time_avg= time_avg+ time_store_array[n];
