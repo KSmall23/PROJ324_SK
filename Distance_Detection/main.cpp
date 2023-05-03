@@ -87,7 +87,7 @@ void measure()
         //read the timer
         time_store =  Time.read_us();
         //collect 100 samples
-        for (int n=99; n>0; n--)
+        for (int n=100; n>0; n--)
          {
           time_store_array[n] = time_store_array[n-1];
          }
