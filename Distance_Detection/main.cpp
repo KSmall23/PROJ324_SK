@@ -100,6 +100,27 @@ void measure()
         time_avg = time_avg/100;
         time_store = time_store;
 
+        //correct error
+        if(time_avg <1000)
+        {
+            time_avg =time_avg - 250;
+        }
+        else if ((time_avg >1000) &&(time_avg <1500))
+        {
+            time_avg =time_avg - 300;
+        }
+        else if ((time_avg >1500) &&(time_avg <3000))
+        {
+            time_avg =time_avg - 350;
+        }
+        else if ((time_avg >3000) &&(time_avg <3500))
+        {
+            time_avg =time_avg - 375;
+        }
+        else if (time_avg >3500)
+        {
+            time_avg =time_avg - 400;
+        }
         //print time signal took from transmitter to receiver
         printf("time = %f\n",time_avg);
         //convert time from us to s
