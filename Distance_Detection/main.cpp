@@ -101,11 +101,11 @@ void measure()
         time_store = time_store;
 
         //correct error
-        if(time_avg <1000)
+        if(time_avg <1200)
         {
             time_avg =time_avg - 250;
         }
-        else if ((time_avg >1000) &&(time_avg <1500))
+        else if ((time_avg >1200) &&(time_avg <2000))
         {
             time_avg =time_avg - 300;
         }
