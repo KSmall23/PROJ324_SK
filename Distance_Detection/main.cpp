@@ -105,17 +105,13 @@ void measure()
         {
             time_avg =time_avg - 250;
         }
-        else if ((time_avg >1200) &&(time_avg <2000))
+        else if ((time_avg >1200) && (time_avg <2000))
         {
             time_avg =time_avg - 300;
         }
-        else if ((time_avg >1500) &&(time_avg <3000))
+        else if ((time_avg >2000) && (time_avg <3500))
         {
             time_avg =time_avg - 350;
-        }
-        else if ((time_avg >3000) &&(time_avg <3500))
-        {
-            time_avg =time_avg - 375;
         }
         else if (time_avg >3500)
         {
