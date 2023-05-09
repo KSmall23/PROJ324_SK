@@ -22,7 +22,8 @@ AnalogOut CarrierWave (DAC1_AN_PIN);
 InterruptIn StopWave (PG_10);
 DigitalOut Red (TRAF_RED1_PIN);
 DigitalOut Green (TRAF_GRN1_PIN);
-
+uop_msb::LCD_16X2_DISPLAY LCD;
+uop_msb::EnvSensor TempSens;
 
 Thread t1(osPriorityAboveNormal1);
 
@@ -34,6 +35,8 @@ float time_store = 0;
 float time_avg =0;
 float time_store_array[100];
 float x=0;	
+
+int Temp;
 
 void Teest();
 void t2main ();
@@ -73,6 +76,7 @@ int main()
          CarrierWave =1; 
          // keeps pulse high for 10ms
          ThisThread:: sleep_for(10ms);
+          
         }
      }
 }
@@ -121,13 +125,24 @@ void measure()
         printf("time = %f\n",time_avg);
         //convert time from us to s
         float time_sec = time_avg*0.000001;
+
+        Temp = TempSens.getTemperature();
+         printf("temp = %d\n",Temp);
+        float division_a = (Temp*1000000)/273;
+        float division_b = 1 + (division_a*0.000001);
+        float speed = 331*sqrtf(division_b);
+        printf("speed = %f\n",speed);
         //CALCULTATE DISTANCE
         //distance = speed * time;
         //here, let speed equal approx 343m/s
         //because distance is there and back then /2   
-        float distance = (343 * time_sec)/2;
-        //pritn distance from object
+        float distance = (speed * time_sec)/2;
+        //print distance from object
         printf("distance = %f\n",distance);
+        int distance_cm = (distance*100) +0.5;
+        printf("distance = %d\n",distance_cm);
+        LCD.locate(0,0);
+        LCD.printf("distance = %d cm\n",distance_cm);
         //stop timer
         Time.stop();
        
