@@ -125,7 +125,7 @@ void measure()
         printf("time = %f\n",time_avg);
         //convert time from us to s
         float time_sec = time_avg*0.000001;
-
+        //Use temperature reading to calculate speed of sound wave
         Temp = TempSens.getTemperature();
          printf("temp = %d\n",Temp);
         float division_a = (Temp*1000000)/273;
@@ -134,18 +134,17 @@ void measure()
         printf("speed = %f\n",speed);
         //CALCULTATE DISTANCE
         //distance = speed * time;
-        //here, let speed equal approx 343m/s
         //because distance is there and back then /2   
         float distance = (speed * time_sec)/2;
         //print distance from object
-        printf("distance = %f\n",distance);
+        printf("distance = %f m\n",distance);
+        //convert distance to nearest cm value
         int distance_cm = (distance*100) +0.5;
-        printf("distance = %d\n",distance_cm);
+        //print distance in cm to LCD screen
         LCD.locate(0,0);
         LCD.printf("distance = %d cm\n",distance_cm);
         //stop timer
-        Time.stop();
-       
+        Time.stop();    
         //reset timer to zero
         Time.reset();
     } 
